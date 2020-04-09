@@ -5,11 +5,11 @@ A modified version of rDUINOScope that works with Adafruit 3.5" 320X480 TFT SPI 
 # Update Friday 10/4/2020 (Fayrouz Update With ILI9341):
 * The new version is built on the SdFat Library.
 * It uses a modified version of marekburiak-ILI9341_due library that has been modified specially for this project.
-* New Graphical User Interface has been developed.
-* Corrected Solar System Objects bug from last update.
+* New Graphical User Interface has been developed,Inspired by Dessislav Gouzgounov.
+* Corrected Solar System Objects bug from last update. Thanks to (Aitor Plazaola Alcerreca) From the rDUINOScope Support Group.
 * Support for Stellarium Mobile Plus has been added.
 # Hardware Changes:
-* Support for PHD2 Autoguiding has been added.
+* Support for PHD2 Autoguiding has been added. Thanks to the project by https://github.com/kevinferrare/arduino-st4
 * A third stepper motor has been added for focus control.
 * An Optional DFRobot Mp3 Player has been added for future upgrade.
 * Consider the new Wiring Diagram for Hardware Changes!
