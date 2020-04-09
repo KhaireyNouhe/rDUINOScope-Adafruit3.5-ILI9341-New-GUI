@@ -1,6 +1,7 @@
 # rDUINOScope-Adafruit3.5-ILI9341-New-GUI
 
-A modified version of rDUINOScope that works with Adafruit 3.5" 320X480 TFT SPI mode, Updated to the latest firmware version V_2.3.1.===========================================================
+A modified version of rDUINOScope that works with Adafruit 3.5" 320X480 TFT SPI mode, Updated to the latest firmware version V_2.3.1.
+===========================================================
 # Update Friday 10/4/2020 (Fayrouz Update With ILI9341):
 * The new version is built on the SdFat Library.
 * It uses a modified version of marekburiak-ILI9341_due library that has been modified specially for this project.
