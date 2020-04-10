@@ -317,42 +317,42 @@ void considerTouchInput(int lx, int ly)
         // Right Side Touched
         drawOptionsScreen();
       }
-      if (lx > 1 && lx < 100 && ly > 325 && ly < 395 && IS_BT_MODE_ON == false) {
+      if (lx > 9 && lx < 99 && ly > 375 && ly < 419 && IS_BT_MODE_ON == false) {
         // BTN 1 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 1;
         } else {
           last_button = 7;
         }
-      } else if (lx > 1 && lx < 100 && ly > 405 && ly < 475 && IS_BT_MODE_ON == false) {
+      } else if (lx > 9 && lx < 99 && ly > 428 && ly <480  && IS_BT_MODE_ON == false) {
         // BTN 4 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 4;
         } else {
           last_button = 10;
         }
-      } else if (lx > 110 && lx < 210 && ly > 325 && ly < 395 && IS_BT_MODE_ON == false) {
+      } else if (lx > 115 && lx < 205 && ly > 375 && ly < 419 && IS_BT_MODE_ON == false) {
         // BTN 2 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 2;
         } else {
           last_button = 8;
         }
-      } else if (lx > 110 && lx < 210 && ly > 405 && ly < 475) {
+      } else if (lx > 115 && lx < 205 && ly > 428 && ly < 480) {
         // BTN 5 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 5;
         } else {
           last_button = 11;
         }
-      } else if (lx > 220 && lx < 290 && ly > 325 && ly < 395) {
+      } else if (lx > 222 && lx < 320 && ly > 375 && ly < 420) {
         // BTN 3 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 3;
         } else {
           last_button = 9;
         }
-      } else if (lx > 220 && lx < 290 && ly > 405 && ly < 475) {
+      } else if (lx > 222 && lx < 320 && ly > 428 && ly <480) {
         // BTN 6 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 6;
@@ -361,7 +361,7 @@ void considerTouchInput(int lx, int ly)
         }
       }
     }
-
+    
     ////////////////////////////////////////////////// Coordinates Screen Touch Actions ///////////////////////////////////////////////////////
     else if (CURRENT_SCREEN == 5)
     { // captures touches on drawCoordinatesScreen()
