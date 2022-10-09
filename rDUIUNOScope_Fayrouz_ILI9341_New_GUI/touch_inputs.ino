@@ -6,7 +6,7 @@
 //    the Free Software Foundation, either version 3 of the License, or
 //    any later version.
 //
-//    PROJECT Website: http://rduinoscope.tk/
+//    PROJECT Website: http://rduinoscope.byethost24.com
 //
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -324,7 +324,7 @@ void considerTouchInput(int lx, int ly)
         } else {
           last_button = 7;
         }
-      } else if (lx > 9 && lx < 99 && ly > 428 && ly <480  && IS_BT_MODE_ON == false) {
+      } else if (lx > 9 && lx < 99 && ly > 428 && ly < 480  && IS_BT_MODE_ON == false) {
         // BTN 4 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 4;
@@ -352,7 +352,7 @@ void considerTouchInput(int lx, int ly)
         } else {
           last_button = 9;
         }
-      } else if (lx > 222 && lx < 320 && ly > 428 && ly <480) {
+      } else if (lx > 222 && lx < 320 && ly > 428 && ly < 480) {
         // BTN 6 pressed
         if (MAIN_SCREEN_MENU == 0) {
           last_button = 6;
@@ -361,7 +361,7 @@ void considerTouchInput(int lx, int ly)
         }
       }
     }
-    
+
     ////////////////////////////////////////////////// Coordinates Screen Touch Actions ///////////////////////////////////////////////////////
     else if (CURRENT_SCREEN == 5)
     { // captures touches on drawCoordinatesScreen()
@@ -1475,14 +1475,17 @@ void considerTouchInput(int lx, int ly)
 
       if (last_button == 6) {   // BlueTooth Mode
         if (IS_STEPPERS_ON == true) {
-
           if (IS_BT_MODE_ON == true) {
             IS_BT_MODE_ON = false;
           } else {
             IS_BT_MODE_ON = true;
             // Initialize Bluetooth communication on PINs: 15 (RX) and 14 (TX)
             OBJECT_NAME = "BT";
-            drawBin("objects/BT.bin", 0, 143, 320, 142);
+            if (!IS_NIGHTMODE) {
+              drawBin("objects/day/BT.bin", 0, 143, 320, 135);
+            } else {
+              drawBin("objects/night/BT.bin", 0, 143, 320, 135);
+            }
           }
           last_button = 0;
           drawMainScreen();
