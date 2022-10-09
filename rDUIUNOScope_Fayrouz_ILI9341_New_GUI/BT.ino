@@ -6,7 +6,7 @@
 //    the Free Software Foundation, either version 3 of the License, or
 //    any later version.
 //
-//    PROJECT Website: http://rduinoscope.tk/
+//    PROJECT Website: http://rduinoscope.byethost24.com
 //
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -237,7 +237,7 @@ void considerBTCommands() {
     BT_COMMAND_STR = "";
   }
 
-  //  Request GW  ??? Unkoran
+  //  Request GW  ??? Unknown
   if (BT_COMMAND_STR == ":GW") {
     Serial3.print("AT2");
     Serial3.print("#");
@@ -250,8 +250,6 @@ void considerBTCommands() {
     Serial3.print("#");
     BT_COMMAND_STR = "";
   }
-
-
 
   // :Sr 07:08:52# - Set Target RA
   if (BT_COMMAND_STR.indexOf("Sr") > 0) {
@@ -440,8 +438,10 @@ void considerBTCommands() {
 
     BT_COMMAND_STR = "";
   }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   if (BT_COMMAND_STR.indexOf("SlewTo") > 0) {
     // Serial.println("SlewTo Command");
+    //$SlewTo;NGC598;0;40.3683;41;41.1167;19.5;8.1;0;AND;E5;M 110#
     int i1 = BT_COMMAND_STR.indexOf(';');
     int i2 = BT_COMMAND_STR.indexOf(';', i1 + 1);
     int i3 = BT_COMMAND_STR.indexOf(';', i2 + 1);
@@ -469,7 +469,6 @@ void considerBTCommands() {
       OBJECT_DEC_M *= -1;
     }
 
-
     // ora SlewTo the selected object and draw information on mainScreen
     calculateLST_HA();
     if (ALT > 0) {
@@ -494,6 +493,576 @@ void considerBTCommands() {
     drawMainScreen();
     BT_COMMAND_STR = "";
   }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (BT_COMMAND_STR.indexOf("GOToMessier") > 0) {
+    //$GOToMessier;M110;0h40.4m;+41°41';ANDROMEDA;Elliptical Galaxy;8;17'x10';#
+    if (IS_STEPPERS_ON == true) {
+      TRACKING_MOON = false;
+      int i1 = BT_COMMAND_STR.indexOf(';');
+      int i2 = BT_COMMAND_STR.indexOf(';', i1 + 1);
+      int i3 = BT_COMMAND_STR.indexOf(';', i2 + 1);
+      int i4 = BT_COMMAND_STR.indexOf(';', i3 + 1);
+      int i5 = BT_COMMAND_STR.indexOf(';', i4 + 1);
+      int i6 = BT_COMMAND_STR.indexOf(';', i5 + 1);
+      int i7 = BT_COMMAND_STR.indexOf(';', i6 + 1);
+      int i8 = BT_COMMAND_STR.indexOf(';', i7 + 1);
+      OBJECT_NAME = BT_COMMAND_STR.substring(i1 + 1, i2);
+      OBJECT_DESCR = BT_COMMAND_STR.substring(i8 + 1, BT_COMMAND_STR.length() - 1) + " (Pushed Via Google Assistant)";
+      String OBJ_RA = BT_COMMAND_STR.substring(i2, i3);
+      OBJECT_RA_H = OBJ_RA.substring(1, OBJ_RA.indexOf('h')).toFloat();
+      OBJECT_RA_M = OBJ_RA.substring(OBJ_RA.indexOf('h') + 1, OBJ_RA.length() - 1).toFloat();
+      String OBJ_DEC = BT_COMMAND_STR.substring(i3, i4);
+      String sign = OBJ_DEC.substring(1, 2);
+      OBJECT_DEC_D = OBJ_DEC.substring(2, OBJ_DEC.indexOf('°')).toFloat();
+      OBJECT_DEC_M = OBJ_DEC.substring(OBJ_DEC.indexOf('°') + 1, OBJ_DEC.length() - 1).toFloat();
+      if (sign.equals("-")) {
+        OBJECT_DEC_D *= -1;
+        OBJECT_DEC_M *= -1;
+      }
+      OBJECT_DETAILS = OBJECT_NAME + " is a ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i5 + 1, i6) + " in constelation ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i4 + 1, i5) + ", with visible magnitude of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i6 + 1, i7) + " and size of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i7 + 1, i8);
+
+      // ora SlewTo the selected object and draw information on mainScreen
+      calculateLST_HA();
+      if (ALT > 0) {
+        if (IS_SOUND_ON) {
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(1500);
+        }
+        UpdateObservedObjects();
+        // Stop Interrupt procedure for tracking.
+        Timer3.stop(); //
+        sun_confirm = false;
+        IS_TRACKING = false;
+        IS_OBJ_FOUND = false;
+        IS_OBJECT_RA_FOUND = false;
+        IS_OBJECT_DEC_FOUND = false;
+        Tracking_type = 1; // Preparar el seguimiento que se usara, 1: Sidereal, 2: Solar, 0: Lunar;
+        Tracking_Mode = "Celest";
+        Slew_timer = millis();
+        Slew_RA_timer = Slew_timer + 20000;   // Give 20 sec. advance to the DEC. We will revise later.
+      }
+    } else {
+      OnScreenMsg(5);
+      delay(1000);
+      CURRENT_SCREEN = 4;
+    }
+    drawMainScreen();
+    tft.setTextScale(3);
+    BT_COMMAND_STR = "";
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  if (BT_COMMAND_STR.indexOf("GOToNGC") > 0) {
+    //"$GOToNGC;NGC7789; 23h57.5m; +56Â°43';Carina;Open Cluster;6.6;25'; Caroline Herschel#";
+    if (IS_STEPPERS_ON == true) {
+      TRACKING_MOON = false;
+      int i1 = BT_COMMAND_STR.indexOf(';');
+      int i2 = BT_COMMAND_STR.indexOf(';', i1 + 1);
+      int i3 = BT_COMMAND_STR.indexOf(';', i2 + 1);
+      int i4 = BT_COMMAND_STR.indexOf(';', i3 + 1);
+      int i5 = BT_COMMAND_STR.indexOf(';', i4 + 1);
+      int i6 = BT_COMMAND_STR.indexOf(';', i5 + 1);
+      int i7 = BT_COMMAND_STR.indexOf(';', i6 + 1);
+      int i8 = BT_COMMAND_STR.indexOf(';', i7 + 1);
+      OBJECT_NAME = BT_COMMAND_STR.substring(i1 + 1, i2);
+      OBJECT_DESCR = BT_COMMAND_STR.substring(i8 + 1, BT_COMMAND_STR.length() - 1) + " (Pushed Via Google Assistant)";
+      String OBJ_RA = BT_COMMAND_STR.substring(i2, i3);
+      OBJECT_RA_H = OBJ_RA.substring(1, OBJ_RA.indexOf('h')).toFloat();
+      OBJECT_RA_M = OBJ_RA.substring(OBJ_RA.indexOf('h') + 1, OBJ_RA.length() - 1).toFloat();
+      String OBJ_DEC = BT_COMMAND_STR.substring(i3, i4);
+      String sign = OBJ_DEC.substring(1, 2);
+      OBJECT_DEC_D = OBJ_DEC.substring(2, OBJ_DEC.indexOf('°')).toFloat();
+      OBJECT_DEC_M = OBJ_DEC.substring(OBJ_DEC.indexOf('°') + 1, OBJ_DEC.length() - 1).toFloat();
+      if (sign == "-") {
+        OBJECT_DEC_D *= -1;
+        OBJECT_DEC_M *= -1;
+      }
+      OBJECT_DETAILS = OBJECT_NAME + " is a ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i5 + 1, i6) + " in constelation ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i4 + 1, i5) + ", with visible magnitude of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i6 + 1, i7) + " and size of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i7 + 1, i8);
+
+      // ora SlewTo the selected object and draw information on mainScreen
+      calculateLST_HA();
+      if (ALT > 0) {
+        if (IS_SOUND_ON) {
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(1500);
+        }
+        UpdateObservedObjects();
+        // Stop Interrupt procedure for tracking.
+        Timer3.stop(); //
+        sun_confirm = false;
+        IS_TRACKING = false;
+        IS_OBJ_FOUND = false;
+        IS_OBJECT_RA_FOUND = false;
+        IS_OBJECT_DEC_FOUND = false;
+        Tracking_type = 1; // Preparar el seguimiento que se usara, 1: Sidereal, 2: Solar, 0: Lunar;
+        Tracking_Mode = "Celest";
+        Slew_timer = millis();
+        Slew_RA_timer = Slew_timer + 20000;   // Give 20 sec. advance to the DEC. We will revise later.
+      }
+    } else {
+      OnScreenMsg(5);
+      delay(1000);
+      CURRENT_SCREEN = 4;
+    }
+    drawMainScreen();
+    BT_COMMAND_STR = "";
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  if (BT_COMMAND_STR.indexOf("GOToSolar") > 0) {
+    //$GOToSolar;JUPITER;5#
+    if (IS_STEPPERS_ON == true) {
+      int i1 = BT_COMMAND_STR.indexOf(';');
+      int i2 = BT_COMMAND_STR.indexOf(';', i1 + 1);
+      int i3 = BT_COMMAND_STR.indexOf(';', i2 + 1);
+
+      OBJECT_NAME = BT_COMMAND_STR.substring(i1 + 1, i2);
+      String OBJ_to_go = BT_COMMAND_STR.substring(i2, i3);
+      int object_selected = OBJ_to_go.substring(1).toInt();
+      OBJECT_DESCR = "Pushed Via Google Assistant";
+      Serial.print("object_selected=");
+      Serial.print(object_selected);
+      if (IS_SOUND_ON) {
+        SoundOn(800, 8);
+      }
+      calculateLST_HA();
+      if (object_selected == 3) // If I Chose Earth
+      {
+        OnScreenMsg(7);
+        delay(2000);
+        drawMainScreen();
+      }
+      else if (object_selected <= 10)
+      {
+        if (object_selected == 0) // If I chose the Sun
+        {
+          CURRENT_SCREEN = 15;
+          drawConfirmSunTrack();
+        } else {
+          planet_pos(object_selected); // If I Chose Another Planet
+        }
+
+        if (sun_confirm || object_selected != 0)
+        {
+          calculateLST_HA();
+          if (ALT > 0)
+          {
+            OnScreenMsg(1);
+            if (IS_SOUND_ON)
+            {
+              SoundOn(note_C, 32);
+              delay(200);
+              SoundOn(note_C, 32);
+              delay(200);
+              SoundOn(note_C, 32);
+              delay(1000);
+            }
+            // Stop Interrupt procedure for tracking.
+            Timer3.stop(); //
+            IS_TRACKING = false;
+            IS_OBJ_FOUND = false;
+            IS_OBJECT_RA_FOUND = false;
+            IS_OBJECT_DEC_FOUND = false;
+            switch (object_selected)
+            {
+              case 0:
+                Tracking_type = 2; // Change the tracking type Automatically. 1: Sidereal, 2: Solar, 0: Lunar;
+                Tracking_Mode = "Solar";
+                break;
+              case 10:
+                Tracking_type = 0; // Change the tracking type Automatically. 1: Sidereal, 2: Solar, 0: Lunar;
+                Tracking_Mode = "Lunar";
+                break;
+              default:
+                Tracking_type = 1; // Change the tracking type Automatically. 1: Sidereal, 2: Solar, 0: Lunar;
+                Tracking_Mode = "Celest";
+                break;
+            }
+            Slew_timer = millis();
+            Slew_RA_timer = Slew_timer + 20000;   // Give 20 sec. advance to the DEC. We will revise later.
+          }
+          UpdateObservedObjects();
+          //CUSTOM_PAGER == 0;
+          sun_confirm = false;
+          BT_COMMAND_STR = "";
+          drawMainScreen();
+        }
+      }
+    } else {
+      OnScreenMsg(5);
+      delay(1000);
+      CURRENT_SCREEN = 4;
+    }
+    drawMainScreen();
+    BT_COMMAND_STR = "";
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  if (BT_COMMAND_STR.indexOf("GOToName") > 0) {
+    //"$GOToNGC;NGC7789; 23h57.5m; +56Â°43';Carina;Open Cluster;6.6;25'; Caroline Herschel#";
+    //"$GOToMessier;NGC7789; 23h57.5m; +56Â°43';Carina;Open Cluster;6.6;25'; Caroline Herschel#";
+    if (IS_STEPPERS_ON == true) {
+      TRACKING_MOON = false;
+      int i1 = BT_COMMAND_STR.indexOf(';');
+      int i2 = BT_COMMAND_STR.indexOf(';', i1 + 1);
+      int i3 = BT_COMMAND_STR.indexOf(';', i2 + 1);
+      int i4 = BT_COMMAND_STR.indexOf(';', i3 + 1);
+      int i5 = BT_COMMAND_STR.indexOf(';', i4 + 1);
+      int i6 = BT_COMMAND_STR.indexOf(';', i5 + 1);
+      int i7 = BT_COMMAND_STR.indexOf(';', i6 + 1);
+      int i8 = BT_COMMAND_STR.indexOf(';', i7 + 1);
+      OBJECT_NAME = BT_COMMAND_STR.substring(i1 + 1, i2);
+      OBJECT_DESCR = BT_COMMAND_STR.substring(i8 + 1, BT_COMMAND_STR.length() + 1) + " (Pushed Via Google Assistant)";
+      String OBJ_RA = BT_COMMAND_STR.substring(i2, i3);
+      OBJECT_RA_H = OBJ_RA.substring(1, OBJ_RA.indexOf('h')).toFloat();
+      OBJECT_RA_M = OBJ_RA.substring(OBJ_RA.indexOf('h') + 1, OBJ_RA.length() - 1).toFloat();
+      String OBJ_DEC = BT_COMMAND_STR.substring(i3, i4);
+      String sign = OBJ_DEC.substring(1, 2);
+      OBJECT_DEC_D = OBJ_DEC.substring(2, OBJ_DEC.indexOf('°')).toFloat();
+      OBJECT_DEC_M = OBJ_DEC.substring(OBJ_DEC.indexOf('°') + 1, OBJ_DEC.length() - 1).toFloat();
+      if (sign == "-") {
+        OBJECT_DEC_D *= -1;
+        OBJECT_DEC_M *= -1;
+      }
+      OBJECT_DETAILS = OBJECT_NAME + " is a ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i5 + 1, i6) + " in constelation ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i4 + 1, i5) + ", with visible magnitude of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i6 + 1, i7) + " and size of ";
+      OBJECT_DETAILS += BT_COMMAND_STR.substring(i7 + 1, i8);
+
+      // ora SlewTo the selected object and draw information on mainScreen
+      calculateLST_HA();
+      if (ALT > 0) {
+        if (IS_SOUND_ON) {
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(200);
+          SoundOn(note_C, 32);
+          delay(1500);
+        }
+        UpdateObservedObjects();
+        // Stop Interrupt procedure for tracking.
+        Timer3.stop(); //
+        sun_confirm = false;
+        IS_TRACKING = false;
+        IS_OBJ_FOUND = false;
+        IS_OBJECT_RA_FOUND = false;
+        IS_OBJECT_DEC_FOUND = false;
+        Tracking_type = 1; // Change the tracking type Automatically. 1: Sidereal, 2: Solar, 0: Lunar;
+        Tracking_Mode = "Celest";
+        Slew_timer = millis();
+        Slew_RA_timer = Slew_timer + 20000;   // Give 20 sec. advance to the DEC. We will revise later.
+      }
+      BT_COMMAND_STR = "";
+      drawMainScreen();
+    } else {
+      OnScreenMsg(5);
+      delay(1000);
+      CURRENT_SCREEN = 4;
+    }
+    drawMainScreen();
+    BT_COMMAND_STR = "";
+  }
+  ////////////////////////////////////////// Google Assistant Telescope Control Messages //////////////////////////////////////////////////////////
+  if (BT_COMMAND_STR == ":Temp") {
+    int temperatureValue = (_temp);
+    String i = String(temperatureValue);
+    String Tvalue = "$tmpValue;" + i + "#";
+    Serial3.print (Tvalue);
+    Serial.print (Tvalue);
+    BT_COMMAND_STR = "";
+  }
+
+if (BT_COMMAND_STR == ":Hum") {
+    int humidityValue = (_humid);
+    String i = String(humidityValue);
+    String Hvalue = "$humValue;" + i + "#";
+    Serial3.print (Hvalue);
+    Serial.print (Hvalue);
+    BT_COMMAND_STR = "";
+  }
+  
+  if (BT_COMMAND_STR == ":fan1On") {
+    IS_FAN1_ON = true;
+    digitalWrite(FAN1, HIGH);
+    Fan1_State = "ON";
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":fan1Off") {
+    if (IS_FAN1_ON)
+    {
+      IS_FAN1_ON = false;
+      digitalWrite(FAN1, LOW);
+      Fan1_State = "OFF";
+    }
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":fan2On") {
+    IS_FAN2_ON = true;
+    digitalWrite(FAN2, HIGH);
+    Fan2_State = "ON";
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":fan2Off") {
+    if (IS_FAN2_ON)
+    {
+      IS_FAN2_ON = false;
+      digitalWrite(FAN2, LOW);
+      Fan2_State = "OFF";
+      drawStatusBar();
+      storeOptions_SD();
+      BT_COMMAND_STR = "";
+    }
+  }
+
+  if (BT_COMMAND_STR == ":soundOn") {
+    IS_SOUND_ON = true;
+    Sound_State = "ON";
+    updateSound_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":soundOff") {
+    IS_SOUND_ON = false;
+    Sound_State = "OFF";
+    updateSound_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":steppersOn") {
+    IS_STEPPERS_ON = true;
+    digitalWrite(RA_EN, LOW);
+    digitalWrite(DEC_EN, LOW);
+    Stepper_State = "ON";
+    updateStepper_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":steppersOff") {
+    IS_STEPPERS_ON = false;
+    digitalWrite(RA_EN, HIGH);
+    digitalWrite(DEC_EN, HIGH);
+    Stepper_State = "OFF";
+    updateStepper_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":focusStepperOn") {
+    // ON Focus Stepper Motor
+    Focus_Motor_State = "ON";
+    IS_FOCUS_ON = true;
+    digitalWrite(Focus_EN, LOW);
+    updateFocus_stepper_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":focusStepperOff") {
+    // Off Focus Stepper Motor
+    Focus_Motor_State = "OFF";
+    IS_FOCUS_ON = false;
+    digitalWrite(Focus_EN, HIGH);
+    updateFocus_stepper_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":merFlipAuto") {
+    // ON Meridian Flip
+    IS_MERIDIAN_FLIP_AUTOMATIC = true;
+    Mer_Flip_State = "AUTO";
+    updateMeridianFlip_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":merFlipOff") {
+    // OFF Meridian Flip
+    IS_MERIDIAN_FLIP_AUTOMATIC = false;
+    Mer_Flip_State = "OFF";
+    updateMeridianFlip_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":trakTypLunar") {
+    // Lunar Tracking Selected
+    Tracking_type = 0;
+    Tracking_Mode = "Lunar";
+    updateTrackingMode_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+  if (BT_COMMAND_STR == ":trakTypSolar") {
+    // Solar Tracking Selected
+    Tracking_type = 2;
+    Tracking_Mode = "Solar";
+    updateTrackingMode_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+  if (BT_COMMAND_STR == ":trakTypCelestial") {
+    // Celestial Tracking Selected
+    Tracking_type = 1;
+    Tracking_Mode = "Celest";
+    updateTrackingMode_opt();
+    drawMainScreen();
+    drawStatusBar();
+    storeOptions_SD();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":telescopeSleep") {
+    // Stop Tracking
+    if (IS_TRACKING == true) {
+      IS_TRACKING = false;
+      if (!IS_NIGHTMODE) {
+        drawBin("UI/day/btn_track_off.bin", 222, 375, 90, 44);
+      } else {
+        drawBin("UI/night/btn_track_off.bin", 222, 375, 90, 44);
+      }
+      tft.setTextScale(3);
+      tft.fillRect(0, 116, 320, 25, BLACK);
+      tft.setTextColor(l_text);
+      tft.cursorToXY(1, 119);
+
+      if (OBJECT_NAME.length() > 7) {
+        tft.setTextScale(2);
+        tft.cursorToXY(1, 129);
+        tft.print("OBS:");
+      } else {
+        tft.setTextScale(3);
+        tft.print("OBSERVING:");
+      }
+      tft.setTextColor(title_bg);
+      tft.print(OBJECT_NAME);
+      //OnScreenMsg(2);
+      setmStepsMode("R", 1);
+      Timer3.stop(); //
+    }
+    // Turn Telescope Steppers Off
+    IS_STEPPERS_ON = false;
+    digitalWrite(RA_EN, HIGH);
+    digitalWrite(DEC_EN, HIGH);
+    Stepper_State = "OFF";
+    updateStepper_opt();
+    // Turn Focus Stepper Off
+    Focus_Motor_State = "OFF";
+    IS_FOCUS_ON = false;
+    digitalWrite(Focus_EN, HIGH);
+    updateFocus_stepper_opt();
+    // Turn Telescope Fan1 Off
+    if (IS_FAN1_ON)
+    {
+      IS_FAN1_ON = false;
+      digitalWrite(FAN1, LOW);
+      Fan1_State = "OFF";
+    }
+    // Turn Telescope Fan2 Off
+    if (IS_FAN2_ON)
+    {
+      IS_FAN2_ON = false;
+      digitalWrite(FAN2, LOW);
+      Fan2_State = "OFF";
+    }
+    // Decrease TFT-Light Time-out and turn off immediately
+    TFT_timeout = 30000;
+    TFT_Time = "30 s";
+    analogWrite(TFTBright, 0);
+    IS_TFT_ON = false;
+    updateScreenTimeout_opt();
+
+    drawMainScreen();
+    drawStatusBar();
+    BT_COMMAND_STR = "";
+  }
+
+  if (BT_COMMAND_STR == ":telescopeWakeup") {
+    // Turn Telescope Steppers On
+    IS_STEPPERS_ON = true;
+    digitalWrite(RA_EN, LOW);
+    digitalWrite(DEC_EN, LOW);
+    Stepper_State = "ON";
+    updateStepper_opt();
+
+    // Turn Focus Stepper Off
+    Focus_Motor_State = "ON";
+    IS_FOCUS_ON = true;
+    digitalWrite(Focus_EN, LOW);
+    updateFocus_stepper_opt();
+
+    // Turn Telescope Fan1 On
+    IS_FAN1_ON = true;
+    digitalWrite(FAN1, HIGH);
+    Fan1_State = "ON";
+
+    // Turn Telescope Fan2 On
+    IS_FAN2_ON = true;
+    digitalWrite(FAN2, HIGH);
+    Fan2_State = "ON";
+
+    // Reset TFT-Light Time-out and turn on immediately
+    TFT_timeout = 0;
+    TFT_Time = "AL-ON";
+    analogWrite(TFTBright, 255);
+    IS_TFT_ON = true;
+    updateScreenTimeout_opt();
+
+    drawMainScreen();
+    drawStatusBar();
+    BT_COMMAND_STR = "";
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////
+
   if (BT_COMMAND_STR == "Status") {
     double st;
     int st_h;
