@@ -1844,9 +1844,9 @@ void drawConfirmSunTrack()
 void drawAutoGuidingScreen() {
   CURRENT_SCREEN = 14;
   if (IS_NIGHTMODE) {
-    drawBin("GUI/night/autoguiding.bin", 0, 0, 320, 481);
+    drawBin("UI/night/autoguiding.bin", 0, 0, 320, 481);
   } else {
-    drawBin("GUI/day/autoguiding.bin", 0, 0, 320, 481);
+    drawBin("UI/day/autoguiding.bin", 0, 0, 320, 481);
   }
   DrawButton(10, 80, 300, 40, "RA+ Pulse", 0, btn_d_border, btn_d_border, 3, false);
   DrawButton(10, 135, 300, 40, "RA- Pulse", 0, btn_d_border, btn_d_border, 3, false);
