@@ -12,8 +12,8 @@ String Messier_message;
 String Solar_message;
 String Control_message;
 /************************* WiFi Access Point *********************************/
-#define WLAN_SSID       "ATLASBAY"
-#define WLAN_PASS       "admin1230"
+#define WLAN_SSID       "YOUR_WIFI_NETWORK_NAME"
+#define WLAN_PASS       "YOUR_WIFI_PASSWORD"
 /************************* Adafruit.io Setup *********************************/
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883                   // use 8883 for SSL
