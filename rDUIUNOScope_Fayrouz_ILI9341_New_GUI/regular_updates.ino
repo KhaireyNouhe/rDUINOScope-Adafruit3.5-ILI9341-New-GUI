@@ -6,7 +6,7 @@
 //    the Free Software Foundation, either version 3 of the License, or
 //    any later version.
 //
-//    PROJECT Website: http://rduinoscope.tk/
+//    PROJECT Website: http://rduinoscope.byethost24.com
 //
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,71 +23,67 @@
 //
 
 ///////////////////////////////////////////////////// Temperature Updates ///////////////////////////////////////////////////////
-void considerTempUpdates() // Temperature && Humidity Updates && battery voltage
+void considerTempUpdates()  // Temperature && Humidity Updates && battery voltage
 {
-  if (CURRENT_SCREEN == 4 && (millis() - Tupdate_time) > 30000)
-  {
+  if (CURRENT_SCREEN == 4 && (millis() - Tupdate_time) > 30000) {
     float tHum = dht.readHumidity();
     float tTemp = dht.readTemperature();
-    if (isnan(tHum) || isnan(tTemp))
-    {
+    if (isnan(tHum) || isnan(tTemp)) {
       return;
-    }
-    else
-    {
+    } else {
       //_temp = tTemp - 2;  // I need to calibrate my sensor... it reads 2 deg. higher temp.
       _temp = tTemp;
       _humid = tHum;
     }
     tft.setTextScale(2);
-    if (_temp > -75 && _temp < 75 && _humid < 100 && _humid > 0)
-    {
-      tft.setFontMode(gTextFontModeSolid);// Set font mode to Solid (Highlight Eraser Color)
-      tft.setTextColor(Time_area_font, Time_area_back); //Button_Title
-      tft.cursorToXY(261, 38);
+    if (_temp > -75 && _temp < 75 && _humid < 100 && _humid > 0) {
+      tft.setFontMode(gTextFontModeSolid);               // Set font mode to Solid (Highlight Eraser Color)
+      tft.setTextColor(Time_area_font, Time_area_back);  //Button_Title
+      tft.cursorToXY(261, 31);
       tft.print(_temp, 0);
-      tft.cursorToXY(261, 71);
+      tft.cursorToXY(261, 52);
       tft.print(_humid, 0);
+      tft.cursorToXY(261, 73);
+
+      if (isnan(tHum) || isnan(tTemp)) {
+        tft.print(_temp, 0);
+      } else {
+        tft.print((237.7 * (log(_humid / 100) + (17.27 * _temp) / (237.7 + _temp))) / (17.27 - (log((_humid / 100)) + (17.27 * _temp) / (237.7 + _temp))), 0);
+      }
     }
+    
     Tupdate_time = millis();
 
 #ifdef use_battery_level
     drawBatteryLevel(260, 335, calculateBatteryLevel());
 #endif
   }
-  tft.setFontMode(gTextFontModeTransparent);// Set font mode to Solid (Highlight Eraser Color)
+  tft.setFontMode(gTextFontModeTransparent);  // Set font mode to Solid (Highlight Eraser Color)
 }
 
 ///////////////////////////////////////////////////// Time Updates ///////////////////////////////////////////////////////
-void considerTimeUpdates()
-{ // UPDATEs time on Screen1 && Screen4 -  Clock Screen and Main Screen
+void considerTimeUpdates() {  // UPDATEs time on Screen1 && Screen4 -  Clock Screen and Main Screen
   int changes = 0;
-  for (int y = 0; y < 12; y++)
-  {
-    if (w_DateTime[y] != 0)
-    {
+  for (int y = 0; y < 12; y++) {
+    if (w_DateTime[y] != 0) {
       changes = 1;
     }
   }
   int mer_flp_sound = HAHour + ((HAMin + MIN_TO_MERIDIAN_FLIP + MIN_SOUND_BEFORE_FLIP) / 60);
-  if ((millis() - update_time) > 10000 && mer_flp_sound >= 24)
-  {
-    if (IS_SOUND_ON)
-    {
+  if ((millis() - update_time) > 10000 && mer_flp_sound >= 24) {
+    if (IS_SOUND_ON) {
       SoundOn(3830, 8);
     }
   }
-  if (CURRENT_SCREEN == 4 && (millis() - update_time) > 10000)
-  {
+  if (CURRENT_SCREEN == 4 && (millis() - update_time) > 10000) {
 
-    if (old_d != rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '/'))
-    {
+    if (old_d != rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '/')) {
       if (!IS_NIGHTMODE) {
-        drawBin("UI/day/status_bar_new.bin", 0, 89, 320, 27); // Drawing selected Object Tumbnail 140*140 Pixels
+        drawBin("UI/day/status_bar_new.bin", 0, 89, 320, 27);  // Drawing selected Object Tumbnail 140*140 Pixels
       } else {
-        drawBin("UI/night/status_bar_new.bin", 0, 89, 320, 27); // Drawing selected Object Tumbnail 140*140 Pixels
+        drawBin("UI/night/status_bar_new.bin", 0, 89, 320, 27);  // Drawing selected Object Tumbnail 140*140 Pixels
       }
-      tft.setFontMode(gTextFontModeTransparent);// Set font mode to Transparent (NO Highlight Color)
+      tft.setFontMode(gTextFontModeTransparent);  // Set font mode to Transparent (NO Highlight Color)
       tft.setTextScale(1);
       tft.setTextColor(l_text);
       tft.cursorToXY(1, 100);
@@ -114,51 +110,44 @@ void considerTimeUpdates()
       tft.print(" ALT:");
       tft.setTextColor(btn_l_border);
       tft.print(OBSERVATION_ALTITUDE, 0);
-      tft.setFontMode(gTextFontModeTransparent);// Set font mode to Solid (Highlight Eraser Color)
+      tft.setFontMode(gTextFontModeTransparent);  // Set font mode to Solid (Highlight Eraser Color)
     }
-    tft.setFontMode(gTextFontModeSolid);// Set font mode to Solid (Highlight Eraser Color)
-    tft.setTextColor(Time_area_font, Time_area_back); //Button_Title
+    tft.setFontMode(gTextFontModeSolid);               // Set font mode to Solid (Highlight Eraser Color)
+    tft.setTextColor(Time_area_font, Time_area_back);  //Button_Title
     tft.setTextScale(3);
     tft.cursorToXY(88, 35);
     tft.print(String(rtc.getTimeStr()).substring(0, 5));
 
     tft.fillRect(86, 64, 115, 22, Time_area_back);
     tft.cursorToXY(88, 65);
-    if ((int)LST < 10)
-    {
+    if ((int)LST < 10) {
       tft.print("0");
       tft.setTextScale(1);
       tft.print(" ");
       tft.setTextScale(3);
       tft.print((int)LST);
-    }
-    else
-    {
+    } else {
       tft.print((int)LST);
     }
     tft.setTextScale(3);
     tft.print(":");
-    if ((LST - (int)LST) * 60 < 10)
-    {
+    if ((LST - (int)LST) * 60 < 10) {
       tft.print("0");
       tft.setTextScale(1);
       tft.print(" ");
       tft.setTextScale(3);
       tft.print((LST - (int)LST) * 60, 0);
-    }
-    else
-    {
+    } else {
       tft.print((LST - (int)LST) * 60, 0);
     }
-    if ((OBJECT_NAME != "") && (OBJECT_NAME != "CP") && (IS_BT_MODE_ON == false))
-    {
+    if ((OBJECT_NAME != "") && (OBJECT_NAME != "CP") && (IS_BT_MODE_ON == false)) {
       /*
         if (TRACKING_MOON)
         {
         planet_pos(10);
         }
       */
-      tft.setFontMode(gTextFontModeSolid);// Set font mode to Solid
+      tft.setFontMode(gTextFontModeSolid);  // Set font mode to Solid
       tft.setTextScale(2);
       tft.setTextColor(title_bg, BLACK);
       tft.cursorToXY(48, 215);
@@ -175,12 +164,12 @@ void considerTimeUpdates()
       tft.print(floor(AZ), 0);
       tft.print("^ ");
       tft.print((AZ - floor(AZ)) * 60, 0);
-      tft.setFontMode(gTextFontModeTransparent);// Set font mode to transparent (No Highlight)
+      tft.setFontMode(gTextFontModeTransparent);  // Set font mode to transparent (No Highlight)
     }
 
-    if ((IS_BT_MODE_ON == true) && (OBJECT_DESCR == "Pushed via BlueTooth")) {
+    if (IS_BT_MODE_ON == true) {
       tft.setTextScale(2);
-      tft.setFontMode(gTextFontModeSolid);// Set font mode to Solid (With Highlight)
+      tft.setFontMode(gTextFontModeSolid);  // Set font mode to Solid (With Highlight)
       tft.setTextColor(l_text, BLACK);
       tft.cursorToXY(0, 215);
       tft.println("HA :");
@@ -204,14 +193,12 @@ void considerTimeUpdates()
       tft.print(RA_microSteps);
     }
     update_time = millis();
-    tft.setFontMode(gTextFontModeTransparent);// Set font mode to Transparent (No Highlight)
-  }
-  else if (CURRENT_SCREEN == 5 && (millis() - update_time) > 2000)
-  {
+    tft.setFontMode(gTextFontModeTransparent);  // Set font mode to Transparent (No Highlight)
+  } else if (CURRENT_SCREEN == 5 && (millis() - update_time) > 2000) {
     Current_RA_DEC();
     tft.setTextScale(3);
 
-    tft.fillRect(90, 60, 185, 28, l_text ); //l_text
+    tft.fillRect(90, 60, 185, 28, l_text);  //l_text
     tft.cursorToXY(108, 65);
     tft.print(curr_DEC_lz);
 
@@ -225,24 +212,20 @@ void considerTimeUpdates()
 
     update_time = millis();
 
-  }
-  else if (CURRENT_SCREEN == 1 && (millis() - update_time) > 10000 && changes == 0)
-  {
+  } else if (CURRENT_SCREEN == 1 && (millis() - update_time) > 10000 && changes == 0) {
     tft.setTextColor(BLACK);
-    tft.fillRect(190, 62, 75, 25, l_text ); //
+    tft.fillRect(190, 62, 75, 25, l_text);  //
     tft.cursorToXY(195, 68);
     tft.print(rtc.getTimeStr(FORMAT_SHORT));
     if (old_d != rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '/')) {
 
-      tft.fillRect(50, 62, 130, 25, l_text); //l_text
+      tft.fillRect(50, 62, 130, 25, l_text);  //l_text
       tft.cursorToXY(55, 68);
       tft.print(rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '/'));
     }
     update_time = millis();
-  }
-  else if (CURRENT_SCREEN == 0 && (millis() - update_time) > 5000)
-  {
-    tft.setFontMode(gTextFontModeSolid);// Set font mode to transparent (No Highlight)
+  } else if (CURRENT_SCREEN == 0 && (millis() - update_time) > 5000) {
+    tft.setFontMode(gTextFontModeSolid);  // Set font mode to transparent (No Highlight)
     tft.setTextColor(btn_l_text, BLACK);
     tft.setTextScale(3);
     tft.cursorToXY(65, 150);
@@ -263,31 +246,24 @@ void considerTimeUpdates()
     tft.cursorToXY(80, 285);
     tft.print("Altitude:");
     tft.print(gps.altitude.meters());
-    tft.setFontMode(gTextFontModeTransparent);// Set font mode to transparent (No Highlight)
-    if (gps.satellites.value() == 0)
-    {
+    tft.setFontMode(gTextFontModeTransparent);  // Set font mode to transparent (No Highlight)
+    if (gps.satellites.value() == 0) {
       smartDelay(1000);
-    }
-    else
-    {
+    } else {
       GPS_iterrations += 1;
       smartDelay(1000);
     }
 
-    if ((GPS_iterrations > 2) && (gps.location.lat() != 0))
-    {
+    if ((GPS_iterrations > 2) && (gps.location.lat() != 0)) {
       OBSERVATION_LONGITUDE = gps.location.lng();
       OBSERVATION_LATTITUDE = gps.location.lat();
       OBSERVATION_ALTITUDE = gps.altitude.meters();
       // Set the earth rotation direction depending on the Hemisphere...
       // HIGH and LOW are substituted
-      if (OBSERVATION_LATTITUDE > 0)
-      {
+      if (OBSERVATION_LATTITUDE > 0) {
         STP_FWD = LOW;
         STP_BACK = HIGH;
-      }
-      else
-      {
+      } else {
         STP_FWD = HIGH;
         STP_BACK = LOW;
       }
@@ -304,7 +280,7 @@ void considerTimeUpdates()
 
       int ora, date_delay = 0;
       //int time_delay = round(gps.location.lng() * 4 / 60); //rough calculation of the timezone delay
-      int time_delay = TIME_ZONE; // Use the time zone delay  // Suggested by Aitor
+      int time_delay = TIME_ZONE;  // Use the time zone delay  // Suggested by Aitor
       // convert to epoch
       setTime(gps.time.hour(), gps.time.minute(), gps.time.second(), gps.date.day(), gps.date.month(), gps.date.year());
 #ifdef serial_debug
@@ -312,8 +288,7 @@ void considerTimeUpdates()
       Serial.println(now());
 #endif
 
-      if (isSummerTime())
-      {
+      if (isSummerTime()) {
         //If in summer time sum 1h and put Summer_Time flag as 1
         time_delay += 1;
         Summer_Time = 1;
@@ -323,8 +298,7 @@ void considerTimeUpdates()
       ora = gps.time.hour() + time_delay;
 
       //to update the real time
-      if (ora >= 24)
-      {
+      if (ora >= 24) {
         ora -= 24;
         date_delay = 1;
       }
@@ -336,9 +310,7 @@ void considerTimeUpdates()
       drawClockScreen();
     }
     update_time = millis();
-  }
-  else if ((CURRENT_SCREEN == 13) && (IS_OBJ_FOUND == true) && ((millis() - update_time) > 2000))
-  {
+  } else if ((CURRENT_SCREEN == 13) && (IS_OBJ_FOUND == true) && ((millis() - update_time) > 2000)) {
     tft.setTextColor(btn_l_text);
     tft.setTextScale(2);
     float HAHh;
@@ -352,12 +324,11 @@ void considerTimeUpdates()
     }
 
     HAMm = HAMin;
-    HA_deci = (HAHh + (HAMm / 60)) * 15; // In degrees - decimal
+    HA_deci = (HAHh + (HAMm / 60)) * 15;  // In degrees - decimal
 
-    if (ALLIGN_STEP == 1)
-    {
+    if (ALLIGN_STEP == 1) {
       //tft.fillRect(0, 295, 320, 80, BLACK);
-      tft.setFontMode(gTextFontModeSolid);// Set font mode to Solid (with Highlight)
+      tft.setFontMode(gTextFontModeSolid);  // Set font mode to Solid (with Highlight)
       tft.setTextColor(title_bg, BLACK);
       tft.cursorToXY(0, 280);
       tft.setTextScale(2);
@@ -369,10 +340,9 @@ void considerTimeUpdates()
       tft.print("Delta_DEC: ");
       tft.print(delta_a_DEC * 60, 6);
       tft.println(" arcmin");
-      tft.setFontMode(gTextFontModeTransparent);// Set font mode to Transparent (No Highlight)
+      tft.setFontMode(gTextFontModeTransparent);  // Set font mode to Transparent (No Highlight)
     }
-    tft.setTextScale(2);           // To make sure that when a button is Pressed, it will be re-drawn sith Size 2 text!
+    tft.setTextScale(2);  // To make sure that when a button is Pressed, it will be re-drawn sith Size 2 text!
     update_time = millis();
   }
-
 }
