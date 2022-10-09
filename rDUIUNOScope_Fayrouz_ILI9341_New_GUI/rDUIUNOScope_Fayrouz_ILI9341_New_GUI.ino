@@ -6,7 +6,7 @@
 //    the Free Software Foundation, either version 3 of the License, or
 //    any later version.
 //
-//    PROJECT Website: http://rduinoscope.tk/
+//    PROJECT Website: http://rduinoscope.byethost24.com
 //
 //    This program is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@
 #include <Time.h>
 #include "TouchScreen.h"
 #include <SdFat.h>
-#include <DueTimer.h> // interruptions library
+#include <DueTimer.h>  // interruptions library
 #include <DS3231.h>
 #include <math.h>
 #include <TimeLib.h>
@@ -42,7 +42,7 @@
 DFRobotDFPlayerMini mp3;
 char textBuff[20];
 #define serial_debug       // comment out to deactivate the serial debug mode
-#define use_battery_level // comment out to deactivate battery level option
+#define use_battery_level  // comment out to deactivate battery level option
 
 // Firmware & Hardware Versions
 const String FirmwareDate = "9/4/2020";
@@ -53,13 +53,13 @@ const String HardwareVersion = "Fayrouz&Nextion V.1.0";
 
 // Default values to load when CANCEL button is hit on the GPS screen ( Change by your Home Location!)
 
-float OBSERVATION_LONGITUDE = 24.7136;  // (24.7136* - Riyadh, Saudi Arabia) // (31.0004* - Tanta, Egypt)
-float OBSERVATION_LATTITUDE = 46.6753; // (46.6753* - Riyadh, Saudi Arabia) // (30.7865* - Tanta, Egyp)
-float OBSERVATION_ALTITUDE = 612.00;  // Riyadh, Saudi Arabia // 11.00 Tanta, Egypt
-int TIME_ZONE = 3;                   // Riyadh, Saudi Arabia //2 Tanta, Egypt
+float OBSERVATION_LONGITUDE = 31.0004;  // (24.7136* - Riyadh, Saudi Arabia) // (31.0004* - Tanta, Egypt)
+float OBSERVATION_LATTITUDE = 30.7865;  // (46.6753* - Riyadh, Saudi Arabia) // (30.7865* - Tanta, Egyp)
+float OBSERVATION_ALTITUDE = 11.00;     // Riyadh, Saudi Arabia // 11.00 Tanta, Egypt
+int TIME_ZONE = 2;                      // Riyadh, Saudi Arabia //2 Tanta, Egypt
 // .............................................................
 unsigned long startTime;
-unsigned int  duration;
+unsigned int duration;
 // HERE GOES THE Mount, Gears and Drive information.
 // ... used to calculate the HourAngle to microSteps ratio
 // UPDATE THIS PART according to your SET-UP
@@ -71,44 +71,44 @@ int WORM = 144;
 #else
 int WORM = 144;
 #endif
-int REDUCTOR = 4;      // 1:4 gear reduction
-int DRIVE_STP = 200;   // Stepper drive have 200 steps per revolution
-int MICROSteps = 16;   // I'll use 1/16 microsteps mode to drive sidereal - also determines the LOWEST speed.
+int REDUCTOR = 4;     // 1:4 gear reduction
+int DRIVE_STP = 200;  // Stepper drive have 200 steps per revolution
+int MICROSteps = 16;  // I'll use 1/16 microsteps mode to drive sidereal - also determines the LOWEST speed.
 
 // below variables are used to calculate the paramters where the drive works
 #define ARCSEC_F_ROTAT 1296000   // ArcSeconds in a Full earth rotation;
-#define SIDEREAL_DAY 86164.0905   // Sidereal day in seconds
+#define SIDEREAL_DAY 86164.0905  // Sidereal day in seconds
 float ArcSECstep;
 int MicroSteps_360;
-int RA_90;  // How much in microSteps the RA motor have to turn in order to make 6h = 90 degrees;
-int DEC_90;   // How mich in microSteps the DEC motor have to turn in order to make 6h = 90 degrees;
+int RA_90;   // How much in microSteps the RA motor have to turn in order to make 6h = 90 degrees;
+int DEC_90;  // How mich in microSteps the DEC motor have to turn in order to make 6h = 90 degrees;
 int HA_H_CONST;
 int HA_M_CONST;
 int DEC_D_CONST;
 int DEC_M_CONST;
 int MIN_TO_MERIDIAN_FLIP = 2;   // This constant tells the system when to do the Meridian Flip. "= 2" means 2 minutes before 24:00h (e.g. 23:58h)
-int MIN_SOUND_BEFORE_FLIP = 3;   // This constant tells the system to start Sound before it makes Meridian Flip
-float mer_flp;                   // The calculateLST_HA() function depending on this timer will convert the HA and DEC to the propper ones to do the flip.
+int MIN_SOUND_BEFORE_FLIP = 3;  // This constant tells the system to start Sound before it makes Meridian Flip
+float mer_flp;                  // The calculateLST_HA() function depending on this timer will convert the HA and DEC to the propper ones to do the flip.
 boolean MERIDIAN_FLIP_DO = false;
 int Tracking_type = 1;  // 1: Sidereal, 2: Solar, 0: Lunar;
-int Clock_Sidereal;  // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
-int Clock_Solar;  // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
-int Clock_Lunar;  // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
+int Clock_Sidereal;     // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
+int Clock_Solar;        // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
+int Clock_Lunar;        // Variable for the Interruptions. nterruption is initialized depending on the DATA above -in miliseconds
 
 ///////////////////////////////////////////////////// Modules Setup /////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////// Adafruit 3.5" & ILI9488 TFT Setup /////////////////////////////////////////////////////
 // The display uses hardware SPI
 /** ILI9488 pin map */
-#define TFT_CS  52
-#define TFT_DC  3
+#define TFT_CS 52
+#define TFT_DC 3
 #define TFT_RST -1
 #define TFTBright DAC0
 //ILI9488 tft(TFT_CS, TFT_DC, TFT_RST);
 ILI9341_due tft = ILI9341_due(TFT_CS, TFT_DC, TFT_RST);  //ILI9340
-#define SD_CS 21    // Chip Select for SD card
-#define SD_SPI_SPEED SPI_HALF_SPEED  // SD card SPI speed,SPI_HALF_SPEED, try SPI_FULL_SPEED >> doesn't work
-SdFat SD; // set filesystem
+#define SD_CS 21                                         // Chip Select for SD card
+#define SD_SPI_SPEED SPI_HALF_SPEED                      // SD card SPI speed,SPI_HALF_SPEED, try SPI_FULL_SPEED >> doesn't work
+SdFat SD;                                                // set filesystem
 
 // These are the four touchscreen analog pins
 #define YP A10  // Y+ to A10   >>> must be an analog pin
@@ -117,22 +117,22 @@ SdFat SD; // set filesystem
 #define XP 42   // X+ to 42    >>> a digital pin
 
 // This is calibration data for the raw touch data to the screen coordinates
-#define TS_MINX 120  // touch Left margin  >>> Default value is 110 
+#define TS_MINX 120  // touch Left margin  >>> Default value is 110
 #define TS_MINY 90   // touch up margin    >>> Default value is 80
-#define TS_MAXX 850  // touch Right margin >>> Default value is 900  
-#define TS_MAXY 930  // touch Down margin  >>> Default value is 940 
+#define TS_MAXX 850  // touch Right margin >>> Default value is 900
+#define TS_MAXY 930  // touch Down margin  >>> Default value is 940
 
-#define MINPRESSURE 5    // Minimum Pressure Touch Sensitivity >>> Default value is 10
-#define MAXPRESSURE 1000 // Maximum Pressure Touch Sensitivity >>> Default value is 1000
+#define MINPRESSURE 5     // Minimum Pressure Touch Sensitivity >>> Default value is 10
+#define MAXPRESSURE 1000  // Maximum Pressure Touch Sensitivity >>> Default value is 1000
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 ///////////////////////////////////////////////////// Other Modules Setup /////////////////////////////////////////////////////
 
 #define DHTPIN 43
 #define DHTTYPE DHT22
-DS3231 rtc(A4, A5);           // (SDA-A4, SCL-A5) from the RTC board
+DS3231 rtc(A4, A5);  // (SDA-A4, SCL-A5) from the RTC board
 DHT dht(DHTPIN, DHTTYPE);
-TinyGPSPlus gps;             // (Rx-16, Tx-17)
+TinyGPSPlus gps;  // (Rx-16, Tx-17)
 
 /** NIGHT MODE ANALOG pin */
 #define DAY_NIGHT_PIN A6
@@ -145,23 +145,23 @@ int x_cal, y_cal = 0;
 
 int FAN1 = A2;
 int FAN2 = A3;
-int speakerOut = DAC1;         // Was 2
-int BAT_PIN = A7;             //Analog channel A7 as used to measure BAT_PIN voltage
+int speakerOut = DAC1;  // Was 2
+int BAT_PIN = A7;       //Analog channel A7 as used to measure BAT_PIN voltage
 
 // Stepper Motors Setup
 int RA_EN = 47;
 int RA_STP = 4;
 int RA_DIR = 5;
-int RA_MODE0 = 11; // PD7
-int RA_MODE1 = 12; // PD8
-int RA_MODE2 = 13; // PB27
+int RA_MODE0 = 11;  // PD7
+int RA_MODE1 = 12;  // PD8
+int RA_MODE2 = 13;  // PB27
 
 int DEC_EN = 49;
 int DEC_STP = 6;
 int DEC_DIR = 7;
-int DEC_MODE0 = 10; // PC29
-int DEC_MODE1 = 9; // PC21
-int DEC_MODE2 = 8; // PC22
+int DEC_MODE0 = 10;  // PC29
+int DEC_MODE1 = 9;   // PC21
+int DEC_MODE2 = 8;   // PC22
 
 ////////////////////////// Focus Motor Setup //////////////////////////////////
 int Focus_EN = 51;
@@ -172,10 +172,10 @@ int encoderCLK = 22;
 int encoderDT = 35;
 const int encoderSW = 33;  // Reading Push Button switch on the Rotary Encoder
 
-int Focus_Motor_position = 50; // The initial/home position of focus motor
+int Focus_Motor_position = 50;  // The initial/home position of focus motor
 int encoderCLKLast = LOW;
 int encoderState = LOW;
-int Focus_StepsToTake = 50;    // Controls the resolution of the Focus Stepper
+int Focus_StepsToTake = 50;  // Controls the resolution of the Focus Stepper
 
 ////////////////////////Auto Guiding Setup ////////////////////////////////////
 int RA_PlusPin = 24;
@@ -185,12 +185,12 @@ int DEC_MinusPin = 30;
 int Guiding_Sense = 32;
 bool IS_CONNECTED = false;
 boolean IS_PulseGuiding = false;
-#define CH0_OFFSET  (46 - LEVEL_HIGH/2)
-#define CH1_OFFSET  (CH0_OFFSET + 62 * 1)
-#define CH2_OFFSET  (CH0_OFFSET + 62 * 2)
-#define CH3_OFFSET  (CH0_OFFSET + 62 * 3)
-#define LEVEL_HIGH      (30)
-#define LEVEL_LOW       (0)
+#define CH0_OFFSET (46 - LEVEL_HIGH / 2)
+#define CH1_OFFSET (CH0_OFFSET + 62 * 1)
+#define CH2_OFFSET (CH0_OFFSET + 62 * 2)
+#define CH3_OFFSET (CH0_OFFSET + 62 * 3)
+#define LEVEL_HIGH (30)
+#define LEVEL_LOW (0)
 static uint8_t ch0_data = LEVEL_LOW;
 static uint8_t ch1_data = LEVEL_LOW;
 static uint8_t ch2_data = LEVEL_LOW;
@@ -203,7 +203,7 @@ String Treasure_Array[130];
 String custom_Array[100];
 String ObservedObjects[50];
 String Iter_Stars[50];
-int int_star_count = 0;       // Counter for how many stars are loaded into Iter_Stars[] array.... to be used with Pages, so that it does not show more pages than needed
+int int_star_count = 0;  // Counter for how many stars are loaded into Iter_Stars[] array.... to be used with Pages, so that it does not show more pages than needed
 int Observed_Obj_Count = 0;
 int ALLIGN_STEP = 0;  // Using this variable to count the allignment steps - 1: Synchronize, 2: Allign and Center, 3:....
 int ALLIGN_TYPE = 0;  // Variable to store the alignment type (0-Skip Alignment, 1-1 Star alignment, 2-2 Star alignment
@@ -226,11 +226,11 @@ float OBJECT_RA_M;
 float OBJECT_DEC_D;
 float OBJECT_DEC_M;
 float OBJECT_MAG;
-float curr_RA_H, curr_RA_M, curr_RA_S, curr_DEC_D, curr_DEC_M, curr_DEC_S;    // Global variables to store Mount's current RA and DEC.
-char curr_RA_lz[9], curr_DEC_lz[10], curr_HA_lz[9];                                                // Global variable to store current RA and DEC with Leading Zeroes and sign (RA: 00:00:00; DEC: +/-00*00:00)
+float curr_RA_H, curr_RA_M, curr_RA_S, curr_DEC_D, curr_DEC_M, curr_DEC_S;  // Global variables to store Mount's current RA and DEC.
+char curr_RA_lz[9], curr_DEC_lz[10], curr_HA_lz[9];                         // Global variable to store current RA and DEC with Leading Zeroes and sign (RA: 00:00:00; DEC: +/-00*00:00)
 int SELECTED_STAR = 0;
-double DELTA_RA_ADJUST = 1; // cos RA
-double DELTA_DEC_ADJUST = 1; // cos DEC
+double DELTA_RA_ADJUST = 1;   // cos RA
+double DELTA_DEC_ADJUST = 1;  // cos DEC
 int GPS_iterrations = 0;
 double LST, HAHour, HAMin, ALT, AZ;
 double JD;
@@ -258,7 +258,7 @@ boolean IS_SOUND_ON = true;
 int TFT_Brightness = 255;
 int MAIN_SCREEN_MENU = 0;
 int CURRENT_SCREEN = 0;
-int LOAD_SELECTOR;   // selector to show which LOADING mechanism is used: 1 - Messier, 2 - File, 3 - NGCs
+int LOAD_SELECTOR;  // selector to show which LOADING mechanism is used: 1 - Messier, 2 - File, 3 - NGCs
 boolean TRACKING_MOON;
 boolean sun_confirm = false;
 String Fan1_State = "ON";
@@ -269,27 +269,27 @@ String Stepper_State = "ON";
 String Focus_Motor_State = "ON";
 String Mer_Flip_State = "Auto";
 String Tracking_Mode = "Celest";
-int RA_microSteps, DEC_microSteps, rev_RA_microSteps, rev_DEC_microSteps;              // Current position of the motors in MicroSteps! - when movement occures, values are changed accordingly (manual, tracking or slew to);
+int RA_microSteps, DEC_microSteps, rev_RA_microSteps, rev_DEC_microSteps;  // Current position of the motors in MicroSteps! - when movement occures, values are changed accordingly (manual, tracking or slew to);
 int RA_mode_steps, DEC_mode_steps;
-int SLEW_RA_microsteps, SLEW_DEC_microsteps;    // Where the mottors needs to go in order to point to the object
+int SLEW_RA_microsteps, SLEW_DEC_microsteps;  // Where the mottors needs to go in order to point to the object
 int RA_finish_last = 0;
-int map_r = 0;    // Used to determine the StarMap Row ... image name (1-1.bmp; 1-2.bmp ....)
-int map_c = 0;    // Ued to determine the StarMap Column .... image name
+int map_r = 0;  // Used to determine the StarMap Row ... image name (1-1.bmp; 1-2.bmp ....)
+int map_c = 0;  // Ued to determine the StarMap Column .... image name
 String old_t, old_d;
 String Start_date;
 int update_time, Tupdate_time, TFT_timeout;
 unsigned long UPD_T, UPD_coord, DELAY_Slew, UPD_LST, TFT_Timer;
 int RA_move_ending;
-int w_DateTime[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // array to store date - as updated from updater screen - Wishing_Date
+int w_DateTime[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };  // array to store date - as updated from updater screen - Wishing_Date
 int dateEntryPos = 0;
 int Summer_Time = 0;
 int xPosition = 0;  // Joystick
 int yPosition = 0;  // Joystick
 float _temp, _Stemp;
 float _humid, _Shumid;
-int16_t Bright_triangle, Time_area_back, Time_area_font, texts, Button_State_ON, Button_State_OFF, Button_Title, l_text, d_text, btn_l_border, btn_d_border, btn_l_text, btn_d_text, btn_l_selection, title_bg, title_texts, messie_btn, file_btn, ngc_btn, MsgBox_bg, MsgBox_t; // defines string constants for the clor - Depending on the DAY/NIGHT modes
+int16_t Bright_triangle, Time_area_back, Time_area_font, texts, Button_State_ON, Button_State_OFF, Button_Title, l_text, d_text, btn_l_border, btn_d_border, btn_l_text, btn_d_text, btn_l_selection, title_bg, title_texts, messie_btn, file_btn, ngc_btn, MsgBox_bg, MsgBox_t;  // defines string constants for the clor - Depending on the DAY/NIGHT modes
 File roots;
-File StarMaps;                    // bmp files
+File StarMaps;  // bmp files
 
 // Some variables used for Alignment procedure:
 double Star_1_HA = 0;
@@ -315,7 +315,7 @@ void setup(void) {
   mp3.volume(5);  //Set volume value. From 0 to 30
 
   Serial2.begin(9600);  // Initialize GPS communication on PINs: 17 (RX) and 16 (TX)
-  Serial3.begin(9600); // Bluetooth communication on PINs:  15 (RX) and 14 (TX)
+  Serial3.begin(9600);  // Bluetooth communication on PINs:  15 (RX) and 14 (TX)
   pinMode(speakerOut, OUTPUT);
 
   // below variables are used to calculate the paramters where the drive works
@@ -324,11 +324,11 @@ void setup(void) {
 
   MicroSteps_360 = ww * www;
   RA_90 = MicroSteps_360 / 4;  // How much in microSteps the RA motor have to turn in order to make 6h = 90 degrees;
-  DEC_90 = RA_90;   // How mich in microSteps the DEC motor have to turn in order to make 6h = 90 degrees;
+  DEC_90 = RA_90;              // How mich in microSteps the DEC motor have to turn in order to make 6h = 90 degrees;
   HA_H_CONST = MicroSteps_360 / 360;
   DEC_D_CONST = HA_H_CONST;
 
-  Clock_Sidereal = 1000000 / (MicroSteps_360 / SIDEREAL_DAY); // This way I make the interruption occuer 2wice faster than needed - REASON: allow max time for Pin-UP, Pin-DOWN action
+  Clock_Sidereal = 1000000 / (MicroSteps_360 / SIDEREAL_DAY);  // This way I make the interruption occuer 2wice faster than needed - REASON: allow max time for Pin-UP, Pin-DOWN action
   Clock_Solar = 1000000 / (MicroSteps_360 / (SIDEREAL_DAY - 235.9095));
   Clock_Lunar = 1000000 / (MicroSteps_360 / (SIDEREAL_DAY - 2089.2292));
 
@@ -344,43 +344,50 @@ void setup(void) {
   tft.begin();
   tft.setRotation(iliRotation0);
   tft.setFont(gfxfont);
-  tft.setFontMode(gTextFontModeTransparent);// Set font mode to transparent (No Highlight)
+  tft.setFontMode(gTextFontModeTransparent);  // Set font mode to transparent (No Highlight)
   tft.setTextWrap(true);
   tft.setTextLetterSpacing(1);
   tft.setTextLineSpacing(3);
 
   // DRB8825 - drive mode pins (determine Steppping Modes 1/8, 1/16 and etc.
   pinMode(RA_EN, OUTPUT);
-  digitalWrite(RA_EN, HIGH);// Turn Off RA Motor at startup
-  pinMode(RA_STP, OUTPUT); // RA Step
-  pinMode(RA_DIR, OUTPUT); // RA Dir
+  digitalWrite(RA_EN, HIGH);  // Turn Off RA Motor at startup
+  pinMode(RA_STP, OUTPUT);    // RA Step
+  pinMode(RA_DIR, OUTPUT);    // RA Dir
   pinMode(RA_MODE0, OUTPUT);
   pinMode(RA_MODE1, OUTPUT);
   pinMode(RA_MODE2, OUTPUT);
 
   pinMode(DEC_EN, OUTPUT);
-  digitalWrite(DEC_EN, HIGH);// Turn Off DEC Motor at startup
-  pinMode(DEC_STP, OUTPUT); // DEC Step
-  pinMode(DEC_DIR, OUTPUT); // DEC Dir
+  digitalWrite(DEC_EN, HIGH);  // Turn Off DEC Motor at startup
+  pinMode(DEC_STP, OUTPUT);    // DEC Step
+  pinMode(DEC_DIR, OUTPUT);    // DEC Dir
   pinMode(DEC_MODE0, OUTPUT);
   pinMode(DEC_MODE1, OUTPUT);
   pinMode(DEC_MODE2, OUTPUT);
 
   /////////////// Auto Guiding Pins Setup //////////////////
-  pinMode (RA_PlusPin, INPUT);
-  pinMode (RA_MinusPin, INPUT);
-  pinMode (DEC_PlusPin, INPUT);
-  pinMode (DEC_MinusPin, INPUT);
+  pinMode(Guiding_Sense, INPUT);
+  pinMode(RA_PlusPin, INPUT);
+  pinMode(RA_MinusPin, INPUT);
+  pinMode(DEC_PlusPin, INPUT);
+  pinMode(DEC_MinusPin, INPUT);
+
+  digitalWrite(Guiding_Sense, LOW);
+  digitalWrite(RA_PlusPin, LOW);
+  digitalWrite(RA_MinusPin, LOW);
+  digitalWrite(DEC_PlusPin, LOW);
+  digitalWrite(DEC_MinusPin, LOW);
 
   ///////////////// Focus Motor Setup ///////////////////////
-  pinMode (encoderCLK, INPUT);
-  pinMode (encoderDT, INPUT);
+  pinMode(encoderCLK, INPUT);
+  pinMode(encoderDT, INPUT);
   pinMode(encoderSW, INPUT);
   pinMode(Focus_EN, OUTPUT);
-  digitalWrite(Focus_EN, HIGH); // Turn Off Focus Motor at startup
+  digitalWrite(Focus_EN, HIGH);  // Turn Off Focus Motor at startup
   pinMode(focus_dir_pin, OUTPUT);
   pinMode(focus_step_pin, OUTPUT);
-  digitalWrite(encoderSW, HIGH); // Pull-Up resistor for switch
+  digitalWrite(encoderSW, HIGH);  // Pull-Up resistor for switch
 
   //digitalWrite(RA_DIR,HIGH); // Set Dir high
   //digitalWrite(RA_STP,LOW);
@@ -396,14 +403,13 @@ void setup(void) {
   pinMode(FAN2, OUTPUT);
 
   // Set RA and DEC microstep position
-  RA_microSteps = RA_90; //  --> point to North Sudereal Pole = -180 deg (-12h)
-  DEC_microSteps = 0; //  --> Point to North Sudereal Pole = 90 deg
+  RA_microSteps = RA_90;  //  --> point to North Sudereal Pole = -180 deg (-12h)
+  DEC_microSteps = 0;     //  --> Point to North Sudereal Pole = 90 deg
 
   Timer3.attachInterrupt(Sidereal_rate);
   //  Timer3.start(Clock_Sidereal); // executes the code every 62.329 ms.
 
-  if (analogRead(DAY_NIGHT_PIN) < 800)
-  {
+  if (analogRead(DAY_NIGHT_PIN) < 800) {
     IS_NIGHTMODE = true;
     texts = Maroon;
     l_text = RED;
@@ -488,14 +494,11 @@ void setup(void) {
 
   tft.print("--> Initializing DHT sensor... ");
 
-  if (isnan(dht.readTemperature()) || isnan(dht.readHumidity()))
-  {
+  if (isnan(dht.readTemperature()) || isnan(dht.readHumidity())) {
     tft.setTextColor(RED);
     tft.println("FAIL");
     tft.setTextColor(l_text);
-  }
-  else
-  {
+  } else {
     tft.setTextColor(GREEN);
     tft.println("OK");
     tft.setTextColor(l_text);
@@ -503,15 +506,12 @@ void setup(void) {
 
   tft.print("--> Initializing RTC... ");
   int prev_mil = millis();
-  if (isnan(rtc.getTemp()))
-  {
+  if (isnan(rtc.getTemp())) {
     tft.setTextColor(RED);
     tft.println("FAIL");
     tft.setTextColor(l_text);
     check = false;
-  }
-  else
-  {
+  } else {
     tft.setTextColor(GREEN);
     tft.print("OK   ");
 
@@ -525,10 +525,8 @@ void setup(void) {
 
   tft.print("--> Initializing SD card... ");
 
-  for (int i = 0; i < 10 && !SD.begin(SD_CS, SD_SPI_SPEED); i++)
-  {
-    if (i == 9)
-    {
+  for (int i = 0; i < 10 && !SD.begin(SD_CS, SD_SPI_SPEED); i++) {
+    if (i == 9) {
       tft.setTextColor(RED);
       tft.println("ERROR: Card failed, or not present\n");
       tft.println("Try formatting the SD card to FAT32 and replace the files.");
@@ -548,12 +546,10 @@ void setup(void) {
   File dataFile = SD.open("messier.csv");
 
   // if the file is available, write to it:
-  if (dataFile)
-  {
+  if (dataFile) {
     tft.print("--> loading Messier catalog... ");
     delay(100);
-    while (dataFile.available())
-    {
+    while (dataFile.available()) {
       in_char = dataFile.read();
       items += in_char;
       k = k + 1;
@@ -568,9 +564,7 @@ void setup(void) {
     tft.println("OK");
     tft.setTextColor(l_text);
     delay(100);
-  }
-  else
-  {
+  } else {
     tft.setTextColor(RED);
     tft.println("ERROR opening: messier.csv");
     tft.setTextColor(l_text);
@@ -582,8 +576,7 @@ void setup(void) {
 
   dataFile = SD.open("treasure.csv");
   // if the file is available, write to it:
-  if (dataFile)
-  {
+  if (dataFile) {
     tft.print("--> loading Treasure catalog... ");
     delay(100);
     while (dataFile.available()) {
@@ -601,9 +594,7 @@ void setup(void) {
     tft.println("OK");
     tft.setTextColor(l_text);
     delay(100);
-  }
-  else
-  {
+  } else {
     tft.setTextColor(RED);
     tft.println("ERROR opening: treasure.csv");
     tft.setTextColor(l_text);
@@ -618,17 +609,14 @@ void setup(void) {
   k = 0;
   dataFile = SD.open("custom.csv");
   // if the file is available, write to it:
-  if (dataFile)
-  {
+  if (dataFile) {
     tft.print("--> loading custom.csv... ");
     delay(100);
-    while (dataFile.available())
-    {
+    while (dataFile.available()) {
       in_char = dataFile.read();
       items += in_char;
       k = k + 1;
-      if (in_char == '\n')
-      {
+      if (in_char == '\n') {
         custom_Array[j] = items;
         j = j + 1;
         //          Serial.print(items);
@@ -639,9 +627,7 @@ void setup(void) {
     tft.println("OK");
     tft.setTextColor(l_text);
     delay(100);
-  }
-  else
-  {
+  } else {
     tft.setTextColor(RED);
     tft.println("ERROR opening: custom.csv");
     tft.setTextColor(l_text);
@@ -653,15 +639,12 @@ void setup(void) {
 
   ////////////////////////////////////////////////////////////////
   tft.print("--> loading options...");
-  if (SD.exists("options.txt"))
-  {
+  if (SD.exists("options.txt")) {
     loadOptions_SD();
     tft.setTextColor(GREEN);
     tft.println("OK");
     tft.setTextColor(l_text);
-  }
-  else
-  {
+  } else {
     tft.setTextColor(RED);
     tft.println("FAIL");
     tft.setTextColor(l_text);
@@ -673,7 +656,9 @@ void setup(void) {
   tft.println("--> Powering Steppers up...");
   delay(300);
 #ifndef serial_debug
-  if (check == false)  while (1); //don't do anything more
+  if (check == false)
+    while (1)
+      ;  //don't do anything more
 #endif
 
   calibrateJoypad(&x_cal, &y_cal);
@@ -689,8 +674,7 @@ void setup(void) {
   //delay(200);
 
   // EMPIRIAL MARCH - if sounds everything was initialized well   :)
-  if (IS_SOUND_ON)
-  {
+  if (IS_SOUND_ON) {
     SoundOn(note_f, 48);
     delay(100);
     SoundOn(note_f, 48);
@@ -750,17 +734,15 @@ void setup(void) {
   Stepper_State = "ON";
   IS_STEPPERS_ON = true;
   Focus_Motor_State = "ON";
-  IS_FOCUS_ON = true; // Turn focus motor ON at Startup by default.
+  IS_FOCUS_ON = true;  // Turn focus motor ON at Startup by default.
 }
 
 ///////////////////////////////////////////////////// Void Loop Section /////////////////////////////////////////////////////
 void loop(void) {
 
   // AutoGuiding control .... if Any!
-  if (CURRENT_SCREEN == 14 && digitalRead (Guiding_Sense) == HIGH)
-  {
-    if (IS_CONNECTED == false)
-    {
+  if (CURRENT_SCREEN == 14 && digitalRead(Guiding_Sense) == HIGH) {
+    if (IS_CONNECTED == false) {
       OnScreenMsg(8);
       if (IS_SOUND_ON) {
         SoundOn(note_C, 32);
@@ -773,17 +755,14 @@ void loop(void) {
       drawAutoGuidingScreen();
       IS_CONNECTED = true;
     }
-    Timer3.stop(); //
-    IS_TRACKING = false;
-    IS_IN_OPERATION = false;
+    //Timer3.stop();  //
+    //IS_TRACKING = false;
+    //IS_IN_OPERATION = false;
     IS_PulseGuiding = true;
     CURRENT_SCREEN = 14;
     considerPulseGuiding();
-  }
-  else if (CURRENT_SCREEN == 4 && digitalRead (Guiding_Sense) == HIGH)
-  {
-    if (IS_CONNECTED == true)
-    {
+  } else if (CURRENT_SCREEN == 4 && digitalRead(Guiding_Sense) == HIGH) {
+    if (IS_CONNECTED == true) {
       OnScreenMsg(8);
       if (IS_SOUND_ON) {
         SoundOn(note_C, 32);
@@ -797,17 +776,16 @@ void loop(void) {
     }
     CURRENT_SCREEN = 14;
     drawAutoGuidingScreen();
-    Timer3.stop(); //
-    IS_TRACKING = false;
-    IS_IN_OPERATION = false;
+    //Timer3.stop();  //
+    //IS_TRACKING = false;
+    //IS_IN_OPERATION = false;
     IS_PulseGuiding = true;
     considerPulseGuiding();
-  } else if (CURRENT_SCREEN == 14 && digitalRead (Guiding_Sense) == LOW && IS_CONNECTED == true && IS_PulseGuiding == true )
-  {
+  } else if (CURRENT_SCREEN == 14 && digitalRead(Guiding_Sense) == LOW && IS_CONNECTED == true && IS_PulseGuiding == true) {
     OnScreenMsg(9);
     if (IS_SOUND_ON) {
       SoundOn(note_C, 32);
-      delay(200);
+      delay(200);      
       SoundOn(note_C, 32);
       delay(200);
       SoundOn(note_C, 32);
@@ -820,8 +798,7 @@ void loop(void) {
   }
 
   // Focus Motor Control .... if Any!
-  if (IS_FOCUS_ON == true)
-  {
+  if (IS_FOCUS_ON == true) {
     consider_focus_control();
   }
 
@@ -868,24 +845,28 @@ void loop(void) {
   // The fastes possible from this board in the current state of the software is approx 3 turns/sec (600 steps/sec)
   // IS_OBJ_FOUND == true --> Means that SLEW command have completed
   //
-  if (IS_OBJ_FOUND == true)
-  {
+  if (IS_OBJ_FOUND == true) {
     // BLUETOOTH Considerations ? ... if any
-    if ((IS_BT_MODE_ON == true) && (Serial3.available() > 0) && (IS_MANUAL_MOVE == false))
-    {
+    if ((IS_BT_MODE_ON == true) && (Serial3.available() > 0) && (IS_MANUAL_MOVE == false)) {
       BT_COMMAND_STR = Serial3.readStringUntil('#');
 #ifdef serial_debug
       Serial.println(BT_COMMAND_STR);
 #endif
       considerBTCommands();
-      drawBin("objects/BT.bin", 0, 143, 320, 135);
+      /*
+      if (!IS_NIGHTMODE) {
+        drawBin("objects/day/BT.bin", 0, 143, 320, 135);
+      } else {
+        drawBin("objects/night/BT.bin", 0, 143, 320, 135);
+      }
+      */
     }
 
     // JOYSTICK Movements ? ... if any
     xPosition = analogRead(xPin);
     yPosition = analogRead(yPin);
 
-    if ((xPosition < x_cal - 100) || (xPosition > x_cal + 100) || (yPosition < y_cal - 100) || (yPosition > x_cal + 100)) // all were 100
+    if ((xPosition < x_cal - 100) || (xPosition > x_cal + 100) || (yPosition < y_cal - 100) || (yPosition > x_cal + 100))  // all were 100
     {
 #ifdef serial_debug
       Serial.print("xPin = ");
@@ -894,20 +875,16 @@ void loop(void) {
       Serial.println(yPosition);
 #endif
       IS_MANUAL_MOVE = true;
-      if (IS_STEPPERS_ON)
-      {
+      if (IS_STEPPERS_ON) {
         consider_Manual_Move(xPosition, yPosition);
       }
-    }
-    else
-    {
+    } else {
       IS_MANUAL_MOVE = false;
     }
 
     // This will take care of turning OFF the TFT's background light if the device is not used
     // for XXX amont of seconds and IS_IN_OPERATION = TRUE
-    if ((TFT_timeout > 0) && (millis() - TFT_Timer > TFT_timeout) && (IS_TFT_ON) && (IS_IN_OPERATION))
-    {
+    if ((TFT_timeout > 0) && (millis() - TFT_Timer > TFT_timeout) && (IS_TFT_ON) && (IS_IN_OPERATION)) {
       analogWrite(TFTBright, 0);
       IS_TFT_ON = false;
     }
@@ -945,16 +922,14 @@ void loop(void) {
 
     // OTHER UPDATES ?  ... if any
     // Happens every 2 seconds
-    if (((millis() - UPD_T) > 2000) && (IS_MANUAL_MOVE == false))
-    {
+    if (((millis() - UPD_T) > 2000) && (IS_MANUAL_MOVE == false)) {
       calculateLST_HA();  // Make sure it Updates the LST! used on Main Screen and When Calculating current Coords.
       considerTimeUpdates();
       considerDayNightMode();
       considerTempUpdates();
       // I need to make sure the Drives are not moved to track the stars,
       // if Object is below horizon ALT < 0 - Stop tracking.
-      if ((ALT <= 0) && (IS_TRACKING == true) && (IS_IN_OPERATION == true))
-      {
+      if ((ALT <= 0) && (IS_TRACKING == true) && (IS_IN_OPERATION == true)) {
         IS_TRACKING = false;
         Timer3.stop();
         drawMainScreen();
