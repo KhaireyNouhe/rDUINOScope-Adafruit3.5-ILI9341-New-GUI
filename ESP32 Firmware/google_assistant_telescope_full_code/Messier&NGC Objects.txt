@@ -1,0 +1,448 @@
+///////////////////////////////////////////////////////////////////////////////////////
+      /*
+        else if (NGC_message == "NGC" || "m1" || "M1")
+        {
+        Serial1.print("$SlewTo;;M 1#");
+        } else if (NGC_message == "NGC" || "m2" || "M2")
+        {
+        Serial1.print("$SlewTo;;M 2#");
+        } else if (NGC_message == "NGC" || "m3" || "M3")
+        {
+        Serial1.print("$SlewTo;;M 3#");
+        } else if (NGC_message == "NGC" || "m4" || "M4")
+        {
+        Serial1.print("$SlewTo;;M 4#");
+        } else if (NGC_message == "NGC" || "m5" || "M5")
+        {
+        Serial1.print("$SlewTo;;M 5#");
+        } else if (NGC_message == "NGC" || "m6" || "M6")
+        {
+        Serial1.print("$SlewTo;;M 6#");
+        } else if (NGC_message == "NGC" || "m7" || "M7")
+        {
+        Serial1.print("$SlewTo;;M 7#");
+        } else if (NGC_message == "NGC" || "m8" || "M8")
+        {
+        Serial1.print("$SlewTo;;M 8#");
+        } else if (NGC_message == "NGC" || "m9" || "M9")
+        {
+        Serial1.print("$SlewTo;;M 9#");
+        } else if (NGC_message == "NGC" || "m10" || "M10")
+        {
+        Serial1.print("$SlewTo;;M 10#");
+        } else if (NGC_message == "NGC" || "m11" || "M11")
+        {
+        Serial1.print("$SlewTo;;M 11#");
+        } else if (NGC_message == "NGC" || "m12" || "M12")
+        {
+        Serial1.print("$SlewTo;;M 12#");
+        } else if (NGC_message == "NGC" || "m13" || "M13")
+        {
+        Serial1.print("$SlewTo;;M 13#");
+        } else if (NGC_message == "NGC" || "m14" || "M14")
+        {
+        Serial1.print("$SlewTo;;M 14#");
+        } else if (NGC_message == "NGC" || "m15" || "M15")
+        {
+        Serial1.print("$SlewTo;;M 15#");
+        } else if (NGC_message == "NGC" || "m16" || "M16")
+        {
+        Serial1.print("$SlewTo;;M 16#");
+        } else if (NGC_message == "NGC" || "m17" || "M17")
+        {
+        Serial1.print("$SlewTo;;M 17#");
+        } else if (NGC_message == "NGC" || "m18" || "M18")
+        {
+        Serial1.print("$SlewTo;;M 18#");
+        } else if (NGC_message == "NGC" || "m19" || "M19")
+        {
+        Serial1.print("$SlewTo;;M 19#");
+        } else if (NGC_message == "NGC" || "m20" || "M20")
+        {
+        Serial1.print("$SlewTo;;M 20#");
+        } else if (NGC_message == "NGC" || "m21" || "M21")
+        {
+        Serial1.print("$SlewTo;;M 21#");
+        } else if (NGC_message == "NGC" || "m22" || "M22")
+        {
+        Serial1.print("$SlewTo;;M 22#");
+        } else if (NGC_message == "NGC" || "m23" || "M23")
+        {
+        Serial1.print("$SlewTo;;M 23#");
+        } else if (NGC_message == "NGC" || "m24" || "M24")
+        {
+        Serial1.print("$SlewTo;;M 24#");
+        } else if (NGC_message == "NGC" || "m25" || "M25")
+        {
+        Serial1.print("$SlewTo;;M 25#");
+        } else if (NGC_message == "NGC" || "m26" || "M26")
+        {
+        Serial1.print("$SlewTo;;M 26#");
+        } else if (NGC_message == "NGC" || "m27" || "M27")
+        {
+        Serial1.print("$SlewTo;;M 27#");
+        } else if (NGC_message == "NGC" || "m28" || "M28")
+        {
+        Serial1.print("$SlewTo;;M 28#");
+        } else if (NGC_message == "NGC" || "m29" || "M29")
+        {
+        Serial1.print("$SlewTo;;M 29#");
+        } else if (NGC_message == "NGC" || "m30" || "M30")
+        {
+        Serial1.print("$SlewTo;;M 30#");
+        } else if (NGC_message == "NGC" || "m31" || "M31")
+        {
+        Serial1.print("$SlewTo;;M 31#");
+        } else if (NGC_message == "NGC" || "m32" || "M32")
+        {
+        Serial1.print("$SlewTo;;M 32#");
+        }
+      */
+      else if (NGC_message == "NGC598")
+      {
+        Serial1.print("$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#");
+      }
+      /*
+        else if (NGC_message == "NGC" || "m34" || "M34")
+        {
+        Serial1.print("$SlewTo;;M 34#");
+        } else if (NGC_message == "NGC" || "m35" || "M35")
+        {
+        Serial1.print("$SlewTo;;M 35#");
+        } else if (NGC_message == "NGC" || "m36" || "M36")
+        {
+        Serial1.print("$SlewTo;;M 36#");
+        } else if (NGC_message == "NGC" || "m37" || "M37")
+        {
+        Serial1.print("$SlewTo;;M 37#");
+        } else if (NGC_message == "NGC" || "m38" || "M38")
+        {
+        Serial1.print("$SlewTo;;M 38#");
+        } else if (NGC_message == "NGC" || "m39" || "M39")
+        {
+        Serial1.print("$SlewTo;;M 39#");
+        } else if (NGC_message == "NGC" || "m40" || "M40")
+        {
+        Serial1.print("$SlewTo;;M 40#");
+        } else if (NGC_message == "NGC" || "m41" || "M41")
+        {
+        Serial1.print("$SlewTo;;M 41#");
+        } else if (NGC_message == "NGC" || "m42" || "M42")
+        {
+        Serial1.print("$SlewTo;;M 42#");
+        } else if (NGC_message == "NGC" || "m43" || "M43")
+        {
+        Serial1.print("$SlewTo;;M 43#");
+        } else if (NGC_message == "NGC" || "m44" || "M44")
+        {
+        Serial1.print("$SlewTo;;M 44#");
+        } else if (NGC_message == "NGC" || "m45" || "M45")
+        {
+        Serial1.print("$SlewTo;;M 45#");
+        } else if (NGC_message == "NGC" || "m46" || "M46")
+        {
+        Serial1.print("$SlewTo;;M 46#");
+        } else if (NGC_message == "NGC" || "m47" || "M47")
+        {
+        Serial1.print("$SlewTo;;M 47#");
+        } else if (NGC_message == "NGC" || "m48" || "M48")
+        {
+        Serial1.print("$SlewTo;;M 48#");
+        } else if (NGC_message == "NGC" || "m49" || "M49")
+        {
+        Serial1.print("$SlewTo;;M 49#");
+        } else if (NGC_message == "NGC" || "m50" || "M50")
+        {
+        Serial1.print("$SlewTo;;M 50#");
+        } else if (NGC_message == "NGC" || "m51" || "M51")
+        {
+        Serial1.print("$SlewTo;;M 51#");
+        } else if (NGC_message == "NGC" || "m52" || "M52")
+        {
+        Serial1.print("$SlewTo;;M 52#");
+        } else if (NGC_message == "NGC" || "m53" || "M53")
+        {
+        Serial1.print("$SlewTo;;M 53#");
+        } else if (NGC_message == "NGC" || "m54" || "M54")
+        {
+        Serial1.print("$SlewTo;;M 54#");
+        } else if (NGC_message == "NGC" || "m55" || "M55")
+        {
+        Serial1.print("$SlewTo;;M 55#");
+        } else if (NGC_message == "NGC" || "m56" || "M56")
+        {
+        Serial1.print("$SlewTo;;M 56#");
+        } else if (NGC_message == "NGC" || "m57" || "M57")
+        {
+        Serial1.print("$SlewTo;;M 57#");
+        } else if (NGC_message == "NGC" || "m58" || "M58")
+        {
+        Serial1.print("$SlewTo;;M 58#");
+        } else if (NGC_message == "NGC" || "m59" || "M59")
+        {
+        Serial1.print("$SlewTo;;M 59#");
+        } else if (NGC_message == "NGC" || "m60" || "M60")
+        {
+        Serial1.print("$SlewTo;;M 60#");
+        } else if (NGC_message == "NGC" || "m61" || "M61")
+        {
+        Serial1.print("$SlewTo;;M 61#");
+        } else if (NGC_message == "NGC" || "m62" || "M62")
+        {
+        Serial1.print("$SlewTo;;M 62#");
+        } else if (NGC_message == "NGC" || "m63" || "M63")
+        {
+        Serial1.print("$SlewTo;;M 63#");
+        } else if ( NGC_message== "NGC" || "m64" || "M64")
+        {
+        Serial1.print("$SlewTo;;M 64#");
+        } else if (NGC_message == "NGC" || "m65" || "M65")
+        {
+        Serial1.print("$SlewTo;;M 65#");
+        } else if (NGC_message == "NGC" || "m66" || "M66")
+        {
+        Serial1.print("$SlewTo;;M 66#");
+        } else if (NGC_message == "NGC" || "m67" || "M67")
+        {
+        Serial1.print("$SlewTo;;M 67#");
+        } else if (NGC_message == "NGC" || "m68" || "M68")
+        {
+        Serial1.print("$SlewTo;;M 68#");
+        } else if (NGC_message == "NGC" || "m69" || "M69")
+        {
+        Serial1.print("$SlewTo;;M 69#");
+        } else if (NGC_message == "NGC" || "m70" || "M70")
+        {
+        Serial1.print("$SlewTo;;M 70#");
+        } else if (NGC_message == "NGC" || "m71" || "M71")
+        {
+        Serial1.print("$SlewTo;;M 71#");
+        } else if (NGC_message == "NGC" || "m72" || "M72")
+        {
+        Serial1.print("$SlewTo;;M 72#");
+        } else if (NGC_message == "NGC" || "m73" || "M73")
+        {
+        Serial1.print("$SlewTo;;M 73#");
+        } else if (NGC_message == "NGC" || "m74" || "M74")
+        {
+        Serial1.print("$SlewTo;;M 74#");
+        } else if (NGC_message == "NGC" || "m75" || "M75")
+        {
+        Serial1.print("$SlewTo;;M 75#");
+        } else if (NGC_message == "NGC" || "m76" || "M76")
+        {
+        Serial1.print("$SlewTo;;M 76#");
+        } else if (NGC_message == "NGC" || "m77" || "M77")
+        {
+        Serial1.print("$SlewTo;;M 77#");
+        } else if (NGC_message == "NGC" || "m78" || "M78")
+        {
+        Serial1.print("$SlewTo;;M 78#");
+        } else if (NGC_message == "NGC" || "m79" || "M79")
+        {
+        Serial1.print("$SlewTo;;M 79#");
+        } else if (NGC_message == "NGC" || "m80" || "M80")
+        {
+        Serial1.print("$SlewTo;;M 1#");
+        } else if (NGC_message == "NGC" || "m81" || "M81")
+        {
+        Serial1.print("$SlewTo;;M 81#");
+        } else if (NGC_message == "NGC" || "m82" || "M82")
+        {
+        Serial1.print("$SlewTo;;M 82#");
+        } else if (NGC_message == "NGC" || "m83" || "M83")
+        {
+        Serial1.print("$SlewTo;;M 83#");
+        } else if (NGC_message == "NGC" || "m84" || "M84")
+        {
+        Serial1.print("$SlewTo;;M 84#");
+        } else if (NGC_message == "NGC" || "m85" || "M85")
+        {
+        Serial1.print("$SlewTo;;M 85#");
+        } else if (NGC_message == "NGC" || "m86" || "M86")
+        {
+        Serial1.print("$SlewTo;;M 86#");
+        } else if (NGC_message == "NGC" || "m87" || "M87")
+        {
+        Serial1.print("$SlewTo;;M 87#");
+        } else if (NGC_message == "NGC" || "m88" || "M88")
+        {
+        Serial1.print("$SlewTo;;M 88#");
+        } else if (NGC_message == "NGC" || "m89" || "M89")
+        {
+        Serial1.print("$SlewTo;;M 89#");
+        } else if (NGC_message == "NGC" || "m90" || "M90")
+        {
+        Serial1.print("$SlewTo;;M 90#");
+        } else if (NGC_message == "NGC" || "m91" || "M91")
+        {
+        Serial1.print("$SlewTo;;M 91#");
+        } else if (NGC_message == "NGC" || "m92" || "M92")
+        {
+        Serial1.print("$SlewTo;;M 92#");
+        } else if (NGC_message == "NGC" || "m93" || "M93")
+        {
+        Serial1.print("$SlewTo;;M 93#");
+        } else if (NGC_message == "NGC" || "m94" || "M94")
+        {
+        Serial1.print("$SlewTo;;M 94#");
+        } else if (NGC_message == "NGC" || "m95" || "M95")
+        {
+        Serial1.print("$SlewTo;;M 95#");
+        } else if (NGC_message == "NGC" || "m96" || "M96")
+        {
+        Serial1.print("$SlewTo;;M 96#");
+        } else if (NGC_message == "NGC" || "m97" || "M97")
+        {
+        Serial1.print("$SlewTo;;M 97#");
+        } else if (NGC_message == "NGC" || "m98" || "M98")
+        {
+        Serial1.print("$SlewTo;;M 98#");
+        } else if (NGC_message == "NGC" || "m99" || "M99")
+        {
+        Serial1.print("$SlewTo;;M 99#");
+        } else if (NGC_message == "NGC" || "m100" || "M100")
+        {
+        Serial1.print("$SlewTo;;M 100#");
+        } else if (NGC_message == "NGC" || "m101" || "M101")
+        {
+        Serial1.print("$SlewTo;;M 101#");
+        } else if (NGC_message == "NGC" || "m102" || "M102")
+        {
+        Serial1.print("$SlewTo;;M 102#");
+        } else if (NGC_message == "NGC" || "m103" || "M103")
+        {
+        Serial1.print("$SlewTo;;M 103#");
+        } else if (NGC_message == "NGC" || "m104" || "M104")
+        {
+        Serial1.print("$SlewTo;;M 104#");
+        } else if (NGC_message == "NGC" || "m105" || "M105")
+        {
+        Serial1.print("$SlewTo;;M 105#");
+        } else if (NGC_message == "NGC" || "m106" || "M106")
+        {
+        Serial1.print("$SlewTo;;M 106#");
+        } else if (NGC_message == "NGC" || "m107" || "M107")
+        {
+        Serial1.print("$SlewTo;;M 107#");
+        } else if (NGC_message == "NGC" || "m108" || "M108")
+        {
+        Serial1.print("$SlewTo;;M 108#");
+        } else if (NGC_message == "NGC" || "m109" || "M109")
+        {
+        Serial1.print("$SlewTo;;M 109#");
+        }
+      */
+      else if (NGC_message == "NGC205")
+      {
+        Serial1.print("$SlewTo;NGC205;0;40.3683;41;41.1167;19.5;8.1;0;AND;E5;M 110#");
+      }
+      /*
+        else if (NGC_message == "NGC" || "m111" || "M111")
+        {
+        Serial1.print("$SlewTo;;M 111#");
+        } else if (NGC_message == "NGC" || "m112" || "M112")
+        {
+        Serial1.print("$SlewTo;;M 112#");
+        }
+
+const String M1 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M2 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M3 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M4 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M5 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M6 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M7 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M8 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M9 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M10 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M11 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M12 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M13 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M14 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M15 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M16 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M17 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M18 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M19 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M20 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M21 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M22 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M23 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M24 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M25 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M26 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M27 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M28 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M29 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M30 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M31 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M32 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M33 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M34 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M35 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M36 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M37 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M38 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M39 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M40 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M41 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M42 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M43 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M44 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M45 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M46 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M47 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M48 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M49 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M50 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M51 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M52 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M53 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M54 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M55 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M56 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M57 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M58 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M59 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M60 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M61 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M62 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M63 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M64 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M65 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M66 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M67 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M68 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M69 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M70 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M71 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M72 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M73 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M74 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M75 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M76 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M77 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M78 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M79 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M80 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M81 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M82 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M83 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M84 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M85 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M86 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M87 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M88 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M89 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M90 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M91 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M92 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M93 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M94 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M95 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M96 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M97 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M98 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M99 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
+const String M100 = "$SlewTo;NGC598;1;33.865;30;39.4833;68.7;5.7;TRI;Sc;M 33#";
