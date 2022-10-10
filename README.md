@@ -6,7 +6,7 @@ A modified version of rDUINOScope that works with Adafruit 3.5" 320X480 TFT SPI 
 * Compiled with Arduino IDE V 2.0.0 (without updating the libraries).
 * Added Dew Point to temperature & Humidity data (Thanks to Julien Gicquiaud) from our support community.
 * Fixed a bug prevented the PHD guiding page to load correctly.
-* Added Google Assistant ready ESP32 firmware. 
+* Added Google Assistant ready (DOIT ESP32 DEVKIT V1) firmware. 
 * Added Adafruit MQTT Library to the libraries folder.
 * Included BT commands to the original code for communicating with Google Assistant control commands.
 
