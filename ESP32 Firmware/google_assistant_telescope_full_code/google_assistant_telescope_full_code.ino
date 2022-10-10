@@ -1,3 +1,4 @@
+// Don't forget to write your WIFI Credentials & Adafruit.io Credentials.
 #include <WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
@@ -12,13 +13,13 @@ String Messier_message;
 String Solar_message;
 String Control_message;
 /************************* WiFi Access Point *********************************/
-#define WLAN_SSID       "YOUR_WIFI_NETWORK_NAME"
-#define WLAN_PASS       "YOUR_WIFI_PASSWORD"
+#define WLAN_SSID       "REPLACE BY YOUR_WIFI_NETWORK_NAME"
+#define WLAN_PASS       "REPLACE BY YOUR_WIFI_PASSWORD"
 /************************* Adafruit.io Setup *********************************/
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883                   // use 8883 for SSL
-#define AIO_USERNAME    "khaireynouhe"
-#define AIO_KEY         "aio_ePln04WJqMegOttlDUZ7ytvjqfKB"
+#define AIO_USERNAME    "REPLACE BY YOUR Adafruit.io NAME"
+#define AIO_KEY         "REPLACE BY YOUR Adafruit.io AIO KEY"
 /************ Global State (you don't need to change this!) ******************/
 // Create an ESP8266 WiFiClient class to connect to the MQTT server.
 WiFiClient client;
