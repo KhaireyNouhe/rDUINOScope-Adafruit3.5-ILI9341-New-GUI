@@ -3,7 +3,7 @@
 A modified version of rDUINOScope that works with Adafruit 3.5" 320X480 TFT SPI mode, Updated to the latest firmware version V_2.3.1.
 ===========================================================
 # Update Monday 10/10/2022 (Adafruit 3.5 with ILI9341 NEW GUI + Google Assistant Control):
-* Compiled & tested with Arduino IDE V 2.0.0 & IDE 1.8.19 (without updating the libraries).
+* Compiled & tested with Arduino IDE V 2.0.0 & IDE 1.8.19.
 * Added Dew Point to temperature & Humidity data (Thanks to Julien Gicquiaud) from our support community.
 * Fixed a bug prevented the PHD guiding page to load correctly.
 * Added Google Assistant ready (DOIT ESP32 DEVKIT V1) firmware. 
